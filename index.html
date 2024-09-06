@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script src="./js/rua.js"></script>
+    <script src="./js/predio.js"></script>
+    <title>Elevador-cod3r</title>
+</head>
+<body>
+    <div class="controles">
+        <div class="mostrador">Térreo</div>
+        <button destino="0">T</button>
+        <button destino="1">1</button>
+        <button destino="2">2</button>
+        <button destino="3">3</button>
+        <button destino="4">4</button>
+        <button destino="5">5</button>
+        <button destino="6">6</button>
+    </div>
+    <div class="calcada">
+        <div class="arvore"></div>
+        <div class="predio">
+            <div class="coluna" andares="6"></div>
+            <div class="poco"></div>
+            <div class="coluna" andares="6"></div>
+        </div>
+        <div class="arvore"></div>
+    </div>
+    <div class="rua" faixas="15"></div>
+    <script>
+        (function($) {
+            criarFaixas()
+            criarPavimentos()
+            criarElevador()
+            aplicarControlesElevador() 
+        })(jQuery)
+    </script>
+</body>
+</html>
