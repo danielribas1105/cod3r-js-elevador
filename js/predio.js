@@ -47,7 +47,7 @@ function obterAlturaElevador() {
 function moverElevador(andar) {
     const numeroAndar = +andar
     const elevador = $('.elevador')
-    
+    atualizarMostrador(`${andar === '0' ? 'Térreo' : andar + 'º'}`)
     elevador.css('bottom', obterAlturaElevador() * numeroAndar)
 }
 
@@ -61,10 +61,11 @@ function aplicarControlesElevador() {
     const botoes = $('.controles').find('button')
    
     botoes.on('click', function() {
-        botoes.each(function() {
-            const destino = $(this).attr('destino')
-            console.log(destino)
-            moverElevador(destino)
-        })
+        const destino = $(this).attr('destino')
+        moverElevador(destino)
     })
+}
+
+function atualizarMostrador(numAndar) {
+    $('.mostrador').text(numAndar)
 }
