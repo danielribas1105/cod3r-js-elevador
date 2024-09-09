@@ -30,6 +30,7 @@ function criarTerreo(numAndar) {
     return terreo.append(janela)
 }
 
+//cria estrutura do elevador
 function criarElevador(numAndar) {
     const elevador = $('<div>',{ 
         class: 'elevador',
@@ -45,10 +46,33 @@ function obterAlturaElevador() {
 }
 
 function moverElevador(andar) {
+
+    if(emMovimentacao()) return
+
+    iniciarMovimentacao()
+
     const numeroAndar = +andar
     const elevador = $('.elevador')
-    atualizarMostrador(`${andar === '0' ? 'Térreo' : andar + 'º'}`)
-    elevador.css('bottom', obterAlturaElevador() * numeroAndar)
+    const posicaoInicial = obterPosicaoAtualElevador()
+    const posicaoFinal = obterAlturaElevador() * numeroAndar
+    const direcaoElevador = posicaoFinal > posicaoInicial
+    
+    atualizarMostrador(direcaoElevador ? 'Subindo' : 'Descendo')
+
+    let temporizador = setInterval(() => {
+        const novaPosicao = obterPosicaoAtualElevador() + (direcaoElevador ? 5 : -5)
+        const terminouMovimento = direcaoElevador ? novaPosicao >= posicaoFinal : novaPosicao <= posicaoFinal 
+        
+        elevador.css('bottom', novaPosicao)
+
+        if(terminouMovimento) {
+            clearInterval(temporizador)
+            atualizarMostrador(andar)
+            pararMovimentacao()
+        }
+    }, 30)
+
+
 }
 
 function obterPosicaoAtualElevador() {
@@ -66,6 +90,25 @@ function aplicarControlesElevador() {
     })
 }
 
-function atualizarMostrador(numAndar) {
-    $('.mostrador').text(numAndar)
+function atualizarMostrador(texto) {
+    let novoTexto = texto
+    if(novoTexto !== 'Subindo' && novoTexto !== 'Descendo') {
+        novoTexto = texto === '0' ? 'Térreo' : texto + 'º'
+    } 
+    $('.mostrador').text(novoTexto)
+}
+
+function iniciarMovimentacao() {
+    const elevador = $('.elevador')
+    elevador.attr('moving', true)
+}
+
+function pararMovimentacao() {
+    const elevador = $('.elevador')
+    elevador.removeAttr('moving');
+}
+
+function emMovimentacao() {
+    const moving = $('.elevador').attr('moving')
+    return moving
 }
